@@ -1,5 +1,6 @@
 package com.example.jyun0.taskapp;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -76,12 +77,33 @@ public class MainActivity extends AppCompatActivity {
                 //ダイアログを表示する
                 AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
 
-                builder.setTitle
+                builder.setTitle("DELETE");
+                builder.setMessage(task.getTitle() + "Are you sure do you want to delete?");
+                builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+
+                        RealmResults<Task> results = mRealm.where(Task.class).equalTo(
+                                "id",task.getId()).findAll();
+
+                        mRealm.beginTransaction();
+                        results.deleteAllFromRealm();
+                        mRealm.commitTransaction();
+
+                        reloadListView();
+                    }
+                });
+                builder.setNegativeButton("CANCEL",null);
+
+                AlertDialog dialog = builder.create();
+                dialog.show();
+
+                return true;
             }
         });
 
         // アプリ起動時に表示テスト用のタスクを作成する
-        addTaskForTest();
+       // addTaskForTest();
         reloadListView();
     }
 
@@ -103,18 +125,19 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onDestroy(){
         super.onDestroy();
+        
         mRealm.close();
     }
 
-    private void addTaskForTest(){
-        Task task = new Task();
-        task.setTitle("work");
-        task.setContents("Write program and PUSH");
-        task.setDate(new Date());
-        task.setId(0);
-        mRealm.beginTransaction();
-        mRealm.copyToRealmOrUpdate(task);
-        mRealm.commitTransaction();
-    }
+//    private void addTaskForTest(){
+//        Task task = new Task();
+//        task.setTitle("work");
+//        task.setContents("Write program and PUSH");
+//        task.setDate(new Date());
+//        task.setId(0);
+//        mRealm.beginTransaction();
+//        mRealm.copyToRealmOrUpdate(task);
+//        mRealm.commitTransaction();
+//    }
 
 }

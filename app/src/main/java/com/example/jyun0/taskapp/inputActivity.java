@@ -1,6 +1,8 @@
  package com.example.jyun0.taskapp;
 
+import android.app.AlarmManager;
 import android.app.DatePickerDialog;
+import android.app.PendingIntent;
 import android.app.TimePickerDialog;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
@@ -10,12 +12,11 @@ import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.TimePicker;
-import android.widget.Toolbar;
+import android.support.v7.widget.Toolbar;
 
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
-
 import io.realm.Realm;
 import io.realm.RealmResults;
 
@@ -100,6 +101,7 @@ import io.realm.RealmResults;
          task = realm.where(Task.class).equalTo("id",taskId).findFirst();
          realm.close();
 
+
          if(task == null){
              // 新規作成の場合
              Calendar calendar = Calendar.getInstance();
@@ -162,5 +164,17 @@ import io.realm.RealmResults;
          realm.commitTransaction();
 
          realm.close();
+
+         Intent resultIntent = new Intent(getApplicationContext(), TaskAlarmReceiver.class);
+         resultIntent.putExtra(MainActivity.EXTRA_TASK, task.getId());
+         PendingIntent resultPendingIntent = PendingIntent.getBroadcast(
+                 this,
+                 task.getId(),
+                 resultIntent,
+                 PendingIntent.FLAG_UPDATE_CURRENT
+         );
+
+         AlarmManager alarmManager = (AlarmManager)getSystemService(ALARM_SERVICE);
+         alarmManager.set(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), resultPendingIntent);
      }
 }

@@ -1,13 +1,13 @@
 package com.example.jyun0.taskapp;
 
-import android.annotation.TargetApi;
 import android.content.Context;
-import android.icu.text.SimpleDateFormat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
+
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
@@ -50,7 +50,7 @@ public class TaskAdapter extends BaseAdapter{
         
        textView1.setText(mTaskList.get(position).getTitle());
 
-       SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyy-MM-dd HH:mm", Locale.ENGLISH);
+       SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.ENGLISH);
        Date date = mTaskList.get(position).getDate();
        textView2.setText(simpleDateFormat.format(date));
 

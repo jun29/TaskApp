@@ -11,6 +11,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
+
 import io.realm.Realm;
 import io.realm.RealmChangeListener;
 import io.realm.RealmResults;
@@ -78,13 +79,12 @@ public class MainActivity extends AppCompatActivity {
                 AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
 
                 builder.setTitle("DELETE");
-                builder.setMessage(task.getTitle() + "Are you sure do you want to delete?");
+                builder.setMessage(task.getTitle() + " Are you sure do you want to delete?");
                 builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
 
-                        RealmResults<Task> results = mRealm.where(Task.class).equalTo(
-                                "id",task.getId()).findAll();
+                        RealmResults<Task> results = mRealm.where(Task.class).equalTo("id",task.getId()).findAll();
 
                         mRealm.beginTransaction();
                         results.deleteAllFromRealm();

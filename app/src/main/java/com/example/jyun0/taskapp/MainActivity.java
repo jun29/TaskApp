@@ -72,10 +72,10 @@ public class MainActivity extends AppCompatActivity {
         listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener(){
             @Override
             public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id){
-                // タスクを削除する
+                // タスクを削除
                 final Task task = (Task) parent.getAdapter().getItem(position);
 
-                //ダイアログを表示する
+                //ダイアログを表示
                 AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
 
                 builder.setTitle("DELETE");
@@ -112,7 +112,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        // アプリ起動時に表示テスト用のタスクを作成する
+        // アプリ起動時に表示テスト用のタスクを作成
        // addTaskForTest();
         reloadListView();
     }
@@ -122,13 +122,13 @@ public class MainActivity extends AppCompatActivity {
         RealmResults<Task> taskRealmResults = mRealm.where(Task.class).findAllSorted
                 ("date", Sort.DESCENDING);
 
-        // 上記の結果を、TaskList としてセットする
+        // 上記の結果を、TaskList としてセット
         taskAdapter.setTaskList(mRealm.copyFromRealm(taskRealmResults));
 
         // TaskのListView用のアダプタに渡す
         listView.setAdapter(taskAdapter);
 
-        // 表示を更新するために、アダプターにデータが変更されたことを知らせる
+        // 表示を更新するために、アダプターにデータ変更を通知
         taskAdapter.notifyDataSetChanged();
     }
 
